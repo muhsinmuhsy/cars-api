@@ -30,16 +30,26 @@ class Login(APIView):
         return Response({"details": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
     
 
+# class TestView(APIView):
+#     authentication_classes = [SessionAuthentication, TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+    
+#     def get(self, request, format=None):
+#         user = request.user
+#         serialized_user = UserSerializer(user).data
+#         return Response({"user": serialized_user, "message": "Test view"})
+
 class TestView(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get(self, request, format=None):
         user = request.user
-        serialized_user = UserSerializer(user).data
-        return Response({"user": serialized_user, "message": "Test view"})
-
-
+        user_data = {
+            "username": user.username,
+            "email": user.email,
+        }
+        return Response({"user": user_data, "message": "Test view"})
 
 
 class Logout(APIView):
