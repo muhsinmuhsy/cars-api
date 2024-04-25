@@ -12,11 +12,11 @@ class Signup(APIView):
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            # serializer.save()
-            # user = serializer.instance
-            user = serializer.save() 
-            user.is_user = True  # Set is_user to True here
-            user.save()
+            serializer.save()
+            user = serializer.instance
+            # user = serializer.save() 
+            # user.is_user = True  # Set is_user to True here
+            # user.save()
             token, created = Token.objects.get_or_create(user=user)
             return Response({"user": serializer.data, "token": token.key}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
